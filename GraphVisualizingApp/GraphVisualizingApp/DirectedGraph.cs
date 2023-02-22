@@ -48,7 +48,7 @@ namespace GraphVisualizingApp
             }
             else
             {
-                MessageBox.Show("The adjacency matrix you entered is invalid, please close the graph window and enter valid entries.");
+                MessageBox.Show("The adjacency matrix you entered is invalid, please close the graph window and enter valid entries (0 or 1 only)");
             }
         }
 
