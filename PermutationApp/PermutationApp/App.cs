@@ -8,8 +8,6 @@ namespace PermutationApp
 {
     class App
     {
-        List<string> elementList = new List<string>();
-
         public App()
         {
             Run();
@@ -19,8 +17,16 @@ namespace PermutationApp
         {
             char[] inputArray = GetElementInput();
             PrintPermutations(inputArray);
+            PrintPartitions(inputArray);
+            PrintCombinations(inputArray);
+            Console.ReadKey();
         }
 
+        /// <summary>
+        /// Gets the elements from the user, by having them type all 5 in at once
+        /// If they do not enter enough or too many, the method calls itself again
+        /// </summary>
+        /// <returns></returns>
         char[] GetElementInput()
         {
             Console.WriteLine("Please enter 5 characters and then hit enter to submit:");
@@ -35,111 +41,70 @@ namespace PermutationApp
             return inputArray;
         }
 
+        /// <summary>
+        /// Writes the sets of permutations from nP1 through nPn to the console
+        /// </summary>
+        /// <param name="symbolArray"></param>
         void PrintPermutations(char[] symbolArray)
         {
-            Console.WriteLine("Permutation list:");
+            Console.WriteLine("\nPermutation list:");
             for(int i = 1; i <= 5; i++)
             {
-                Console.WriteLine($"5P{i}:");
-                Permute(symbolArray, 0, i, new List<char>());
-                Console.WriteLine($" Amount of permutations: {FindPermutationCount(symbolArray.Length, i)}");
-            }
+                Console.WriteLine($"\n5P{i}:\n");
 
-            Console.WriteLine("Ordered partition list:");
+                List<string> permutationResults = PermutationCalculator.RecursivePermuter(symbolArray, new List<string>(), new char[i], new Dictionary<int,bool>(), 0, i);
 
-            Console.WriteLine("Combination list:");
-            for(int i = 1; i <=5; i++)
-            {
-                Console.WriteLine($"5C{i}:");
-                Console.WriteLine($" Amount of combinations: {FindCombinationCount(symbolArray.Length, i)}");
-            }
-        }
-
-        void Permute(char[] symbolArray, int startingIndex, int length, List<char> results)
-        {
-            if (length == 0)
-            {
-                Console.WriteLine(results.ToString());
-            }else
-            {
-                for(int i = startingIndex; i <= symbolArray.Length - length; i++)
+                Console.Write("Set: {");
+                foreach(String s in permutationResults)
                 {
-                    results[results.Count - length] = symbolArray[i];
-                    Permute(symbolArray, i+1, length-1, results);
+                    Console.Write($" {s} ");
                 }
+                Console.Write("}\n");
+
+                Console.WriteLine($"\nAmount of permutations: {FactorialCalculator.FindPermutationCount(symbolArray.Length, i)}");
             }
         }
 
-        void MakePartitions()
+        /// <summary>
+        /// Writes the ordered partitions of the set to the console
+        /// </summary>
+        /// <param name="symbolArray"></param>
+        void PrintPartitions(char[] symbolArray)
         {
+            Console.WriteLine("\nOrdered partition list:\n");
 
-        }
-
-        void MakeCombinations()
-        {
-
-        }
-
-        int FindFactorial(int number)
-        {
-            int result = number;
-
-            // Factorial of 0 is 1
-            if (number == 0)
+            Console.WriteLine($"Amount of ordered partitions {FactorialCalculator.FindPartitionCount(symbolArray)}");
+            List<string> partitionResults = PermutationCalculator.RecursivePartitioner(symbolArray, new List<string>(), new char[symbolArray.Length], new Dictionary<int, bool>(), 0, new HashSet<string>());
+            Console.Write("Set: {");
+            foreach (String s in partitionResults)
             {
-                return 1;
+                Console.Write($" {s} ");
             }
-
-            for (int i = number - 1; i > 0; i--)
-            {
-                result *= i;
-            }
-
-            return result;
+            Console.Write("}\n");
         }
 
-        // Amount of permutations is N! / (N-R)!
-        int FindPermutationCount(int number, int taken)
+        /// <summary>
+        /// Writes the sets of combinations from nC1 to nCn to the console
+        /// </summary>
+        /// <param name="symbolArray"></param>
+        void PrintCombinations(char[] symbolArray)
         {
-            return FindFactorial(number) / FindFactorial(number - taken);
-        }
-
-        // Amount of partitions depends on the amount of repeated elements
-        int FindPartitionCount(char[] symbolArray, int number)
-        {
-            int currentDenominator = 1;
-
-            // Storing the amount of each char found in dictionary
-            Dictionary<char, int> foundChars = new Dictionary<char, int>();
-
-            // Go through the array to add the elements to the dictionary
-            foreach(Char c in symbolArray)
+            Console.WriteLine("\nCombination list:\n");
+            for (int i = 1; i <= 5; i++)
             {
-                // If it was already found prior, add one to the count
-                if (foundChars.ContainsKey(c))
+                Console.WriteLine($"5C{i}:\n");
+
+                List<string> combinationResults = PermutationCalculator.RecursiveCombinations(symbolArray, new List<string>(), new char[symbolArray.Length], new Dictionary<int, bool>(), 0, i, new HashSet<string>());
+
+                Console.Write("Set: {");
+                foreach(String s in combinationResults)
                 {
-                    foundChars[c] += 1;
-                }else
-                {
-                    foundChars.Add(c, 1);
+                    Console.Write($" {s} ");
                 }
+                Console.Write("}\n");
+
+                Console.WriteLine($" Amount of combinations: {FactorialCalculator.FindCombinationCount(symbolArray.Length, i)}");
             }
-
-            // The denominator is the product of the factorial of the count
-            // of each of the elements
-            foreach(KeyValuePair<char, int> pair in foundChars)
-            {
-                currentDenominator *= FindFactorial(pair.Value);
-            }
-
-            return FindFactorial(number)/currentDenominator;
-        }
-
-        // Amount of combinations is (N! / (N-R)!) / R!
-        // Which is also the amount of permutations divided by R!
-        int FindCombinationCount(int number, int taken)
-        {
-            return FindPermutationCount(number,taken)/FindFactorial(taken);
         }
     }
 }
