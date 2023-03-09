@@ -30,34 +30,10 @@ namespace PermutationApp
                 return resultsList;
             }
 
-            for (int i = 0; i < inputArray.Length; i++)
-            {
-                // If this is the first time checking for this element, the key wont be in the dictionary so add it, but since it hasn't been used yet
-                // then add it with the value of false
-                if (!usageDict.ContainsKey(i))
-                {
-                    usageDict.Add(i, false);
-                }
-
-                // If the element hasn't been used this iteration, then you can use it
-                // By keeping track of which elements have been used, you can use the process of elimination to figure
-                // out what the next element of the permutation can be
-                if (!usageDict[i])
-                {
-                    // Saves the element for i in the current index
-                    current[currentIndex] = inputArray[i];
-                    // It has been used, now update the dictionary
-                    usageDict[i] = true;
-                    // Recursively call it again with the index iterated by 1 to find the next element
-                    RecursivePermuter(inputArray, resultsList, current, usageDict, currentIndex + 1, length);
-                    // Set it back to false now that we are done with this permutation so it can be used when finding the next one
-                    usageDict[i] = false;
-                }
-            }
+            BuildPerm(inputArray, resultsList, current, usageDict, currentIndex, length);
 
             return resultsList;
         }
-
 
         /// <summary>
         ///  Method that recursively makes ordered partitions of the array of characters, built off of the functionality
@@ -91,30 +67,7 @@ namespace PermutationApp
                 }
             }
 
-            for (int i = 0; i < inputArray.Length; i++)
-            {
-                // If this is the first time checking for this element, the key wont be in the dictionary so add it, but since it hasn't been used yet
-                // then add it with the value of false
-                if (!usageDict.ContainsKey(i))
-                {
-                    usageDict.Add(i, false);
-                }
-
-                // If the element hasn't been used this iteration, then you can use it
-                // By keeping track of which elements have been used, you can use the process of elimination to figure
-                // out what the next element of the permutation can be
-                if (!usageDict[i])
-                {
-                    // Saves the element for i in the current index
-                    current[currentIndex] = inputArray[i];
-                    // It has been used, now update the dictionary
-                    usageDict[i] = true;
-                    // Recursively call it again with the index iterated by 1 to find the next element
-                    RecursivePartitioner(inputArray, resultsList, current, usageDict, currentIndex + 1, existingPerms);
-                    // Set it back to false now that we are done with this permutation so it can be used when finding the next one
-                    usageDict[i] = false;
-                }
-            }
+            BuildPerm(inputArray, resultsList, current, usageDict, currentIndex, existingPerms);
 
             return resultsList;
         }
@@ -141,6 +94,69 @@ namespace PermutationApp
                 return resultsList;
             }
 
+            BuildPerm(inputArray, resultsList, current, usageDict, currentIndex, length, existingPerms);
+
+            return resultsList;
+        }
+
+        static void BuildPerm(char[] inputArray, List<string> resultsList, char[] current, Dictionary<int, bool> usageDict, int currentIndex, int length)
+        {
+            for (int i = 0; i < inputArray.Length; i++)
+            {
+                // If this is the first time checking for this element, the key wont be in the dictionary so add it, but since it hasn't been used yet
+                // then add it with the value of false
+                if (!usageDict.ContainsKey(i))
+                {
+                    usageDict.Add(i, false);
+                }
+
+                // If the element hasn't been used this iteration, then you can use it
+                // By keeping track of which elements have been used, you can use the process of elimination to figure
+                // out what the next element of the permutation can be
+                if (!usageDict[i])
+                {
+                    // Saves the element for i in the current index
+                    current[currentIndex] = inputArray[i];
+                    // It has been used, now update the dictionary
+                    usageDict[i] = true;
+                    // Recursively call it again with the index iterated by 1 to find the next element
+                    RecursivePermuter(inputArray, resultsList, current, usageDict, currentIndex + 1, length);
+                    // Set it back to false now that we are done with this permutation so it can be used when finding the next one
+                    usageDict[i] = false;
+                }
+            }
+        }
+
+        static void BuildPerm(char[] inputArray, List<string> resultsList, char[] current, Dictionary<int, bool> usageDict, int currentIndex, HashSet<string> existingPerms)
+        {
+            for (int i = 0; i < inputArray.Length; i++)
+            {
+                // If this is the first time checking for this element, the key wont be in the dictionary so add it, but since it hasn't been used yet
+                // then add it with the value of false
+                if (!usageDict.ContainsKey(i))
+                {
+                    usageDict.Add(i, false);
+                }
+
+                // If the element hasn't been used this iteration, then you can use it
+                // By keeping track of which elements have been used, you can use the process of elimination to figure
+                // out what the next element of the permutation can be
+                if (!usageDict[i])
+                {
+                    // Saves the element for i in the current index
+                    current[currentIndex] = inputArray[i];
+                    // It has been used, now update the dictionary
+                    usageDict[i] = true;
+                    // Recursively call it again with the index iterated by 1 to find the next element
+                    RecursivePartitioner(inputArray, resultsList, current, usageDict, currentIndex + 1, existingPerms);
+                    // Set it back to false now that we are done with this permutation so it can be used when finding the next one
+                    usageDict[i] = false;
+                }
+            }
+        }
+
+        static void BuildPerm(char[] inputArray, List<string> resultsList, char[] current, Dictionary<int, bool> usageDict, int currentIndex, int length, HashSet<string> existingPerms)
+        {
             for (int i = 0; i < inputArray.Length; i++)
             {
                 // If this is the first time checking for this element, the key wont be in the dictionary so add it, but since it hasn't been used yet
@@ -165,8 +181,6 @@ namespace PermutationApp
                     usageDict[i] = false;
                 }
             }
-
-            return resultsList;
         }
 
         /// <summary>
