@@ -34,7 +34,7 @@ namespace PermutationApp
         /// <returns></returns>
         char[] GetElementInput()
         {
-            Console.WriteLine("Please enter 5 characters and then hit enter to submit:");
+            Console.WriteLine("Please enter 5 unique characters and then hit enter to submit:");
             char[] inputArray = Console.ReadLine().ToCharArray();
 
             if (inputArray.Length != 5)
@@ -43,7 +43,37 @@ namespace PermutationApp
                 GetElementInput();
             }
 
+            if (HasRepeatedElements(inputArray))
+            {
+                Console.WriteLine("You did not enter all unique characters, please try again.");
+                GetElementInput();
+            }
+
             return inputArray;
+        }
+
+        /// <summary>
+        /// Checks to see if the array being passed in has any repeated elements
+        /// </summary>
+        /// <param name="inputArray"></param>
+        /// <returns></returns>
+        bool HasRepeatedElements(char[] inputArray)
+        {
+            for(int i = 0; i < inputArray.Length; i++)
+            {
+                for (int j = 0; j < inputArray.Length; j++)
+                {
+                    if (i != j)
+                    {
+                        if (inputArray[i] == inputArray[j])
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
         }
 
         /// <summary>
