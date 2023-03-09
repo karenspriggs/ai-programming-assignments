@@ -109,7 +109,7 @@ namespace PermutationApp
             Console.WriteLine("\nOrdered partition list:\n");
 
             Console.WriteLine($"Amount of ordered partitions {FactorialCalculator.FindPartitionCount(symbolArray)}");
-            List<string> partitionResults = PermutationCalculator.RecursivePartitioner(symbolArray, new List<string>(), new char[symbolArray.Length], new Dictionary<int, bool>(), 0, new HashSet<string>());
+            List<string> partitionResults = PermutationCalculator.RecursivePartitioner(symbolArray);
             Console.Write("Set: {");
             foreach (String s in partitionResults)
             {
@@ -129,7 +129,7 @@ namespace PermutationApp
             {
                 Console.WriteLine($"5C{i}:\n");
 
-                List<string> combinationResults = PermutationCalculator.RecursiveCombinations(symbolArray, new List<string>(), new char[symbolArray.Length], new Dictionary<int, bool>(), 0, i, new HashSet<string>());
+                List<string> combinationResults = PermutationCalculator.RecursiveCombinations(symbolArray, i);
 
                 Console.Write("Set: {");
                 foreach(String s in combinationResults)
