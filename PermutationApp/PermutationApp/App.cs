@@ -13,9 +13,14 @@ namespace PermutationApp
             Run();
         }
 
-        public void Run()
+        void Run()
         {
             char[] inputArray = GetElementInput();
+            PrintInfo(inputArray);
+        }
+
+        void PrintInfo(char[] inputArray)
+        {
             PrintPermutations(inputArray);
             PrintPartitions(inputArray);
             PrintCombinations(inputArray);
