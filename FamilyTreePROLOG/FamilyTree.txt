@@ -1,0 +1,64 @@
+parent(greatgrandmother1, grandmother).
+parent(greatgrandfather1, grandmother).
+parent(greatgrandmother2, grandfather).
+parent(greatgrandfather2, grandfather).
+
+parent(grandfather, father).
+parent(grandmother, father).
+parent(grandfather, uncle).
+parent(grandmother, uncle).
+parent(grandfather, aunt).
+parent(grandmother, aunt).
+
+parent(mother, me).
+parent(father, me).
+parent(mother, twinsister).
+parent(father, twinsister).
+parent(mother, brother).
+parent(father, brother).
+
+parent(aunt, cousin1).
+parent(uncle2, cousin1).
+parent(aunt, cousin2).
+parent(uncle2, cousin2).
+
+parent(me, daughter).
+parent(husband, daughter).
+parent(me, son).
+parent(husband, son).
+
+parent(cousin1, niece).
+parent(cousinwife, niece).
+parent(cousin1, nephew).
+parent(cousinwife, nephew).
+
+male(greatgrandfather1).
+male(greatgrandfather2).
+male(grandfather).
+male(father). 
+male(uncle).
+male(uncle2).
+male(husband).
+male(cousin1).
+male(son).
+male(nephew).
+
+female(greatgrandmother1).
+female(greatgrandmother2).
+female(grandmother).
+female(mother). 
+female(twinsister).
+female(me).
+female(cousin2).
+female(aunt).
+female(cousinswife).
+female(daughter).
+female(niece).
+
+sibling(X,Y) :- parent(Z, X), parent(Z,Y), X\==Y.
+nephew(X) :- male(X), auncle(_,X).
+son(X) :- male(X), parent(_,X).
+daughter(X) :- female(X), parent(_,X).
+grandparent(X) :- parent(X,Z), parent(Z,_).
+greatgrandparent(X) :- parent(X,Z), grandparent(Z).
+auncle(X) :- sibling(X,Y), parent(Y,_).
