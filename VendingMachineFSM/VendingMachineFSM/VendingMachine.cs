@@ -65,11 +65,17 @@ namespace VendingMachineFSM
                         ChangeState(Input.Buy);
                         break;
                     case ("2"):
-                        currentOutput = Output.Granola;
-                        ChangeState(Input.Buy);
-                        break;
-                    case ("3"):
-                        ChangeState(Input.Cancel);
+                        if (Transaction.Instance.currentPrice < 0.75M)
+                        {
+                            Console.WriteLine("You have not inserted enough quarters to buy granola! Press enter to continue");
+                            Console.ReadKey();
+                            currentState = VendingMachineState.Active;
+                            DoState();
+                        } else
+                        {
+                            currentOutput = Output.Granola;
+                            ChangeState(Input.Buy);
+                        }
                         break;
                     default:
                         currentState = VendingMachineState.Active;
