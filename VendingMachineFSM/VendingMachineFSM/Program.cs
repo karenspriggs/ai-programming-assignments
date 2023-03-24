@@ -10,7 +10,8 @@ namespace VendingMachineFSM
     {
         static void Main(string[] args)
         {
-            new VendingMachine();
+            VendingMachine vm = new VendingMachine();
+            vm.Run();
         }
     }
 }

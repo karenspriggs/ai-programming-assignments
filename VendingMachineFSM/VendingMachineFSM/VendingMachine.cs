@@ -8,12 +8,12 @@ namespace VendingMachineFSM
 {
     public class VendingMachine
     {
-        VendingMachineState currentState = VendingMachineState.Active;
-        Output currentOutput = Output.Nothing;
+        public VendingMachineState currentState = VendingMachineState.Active;
+        public Output currentOutput = Output.Nothing;
 
         public VendingMachine()
         {
-            Run();
+            
         }
 
         public void Run()
@@ -39,6 +39,10 @@ namespace VendingMachineFSM
                 case ("3"):
                     ChangeState(Input.Cancel);
                     break;
+                default:
+                    currentState = VendingMachineState.Active;
+                    DoState();
+                    break;
             }
         }
 
@@ -46,7 +50,9 @@ namespace VendingMachineFSM
         {
             if (Transaction.Instance.currentPrice < 0.5M)
             {
-                Console.WriteLine("You have not inserted enough quarters to buy anything!");
+                Console.WriteLine("You have not inserted enough quarters to buy anything! Press enter to continue");
+                Console.ReadKey();
+                currentState = VendingMachineState.Active;
                 DoState();
             } else
             {
@@ -64,6 +70,10 @@ namespace VendingMachineFSM
                         break;
                     case ("3"):
                         ChangeState(Input.Cancel);
+                        break;
+                    default:
+                        currentState = VendingMachineState.Active;
+                        DoState();
                         break;
                 }
             }
@@ -158,7 +168,8 @@ namespace VendingMachineFSM
             if (input != "1" && input != "2" && input != "3")
             {
                 Console.WriteLine("That is not a valid input, please try again");
-                GetMenuInput();
+                Console.ReadKey();
+                Console.Clear();
             }
 
             return input;
@@ -173,33 +184,34 @@ namespace VendingMachineFSM
             if (input != "1" && input != "2" && input != "3")
             {
                 Console.WriteLine("That is not a valid input, please try again");
-                GetItemInput();
+                Console.ReadKey();
+                Console.Clear();
             }
 
             return input;
         }
+    }
 
-        enum VendingMachineState
-        {
-            Active,
-            Select,
-            Vend
-        }
+    public enum VendingMachineState
+    {
+        Active,
+        Select,
+        Vend
+    }
 
-        enum Input
-        {
-            AddQuarter,
-            Select,
-            Buy,
-            Cancel
-        }
+    public enum Input
+    {
+        AddQuarter,
+        Select,
+        Buy,
+        Cancel
+    }
 
-        enum Output
-        {
-            Nothing,
-            Quarter,
-            Granola,
-            Gum
-        }
+    public enum Output
+    {
+        Nothing,
+        Quarter,
+        Granola,
+        Gum
     }
 }
