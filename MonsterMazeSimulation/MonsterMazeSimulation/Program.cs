@@ -10,6 +10,7 @@ namespace MonsterMazeSimulation
     {
         static void Main(string[] args)
         {
+            new Game();
         }
     }
 }
